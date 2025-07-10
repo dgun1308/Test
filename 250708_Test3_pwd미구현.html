@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background: #c7fad1;
+    }
+
+    h1 {
+      display: flex;
+      justify-content: center;
+    }
+
+    .mjidiv { /* 배경색 작업 진행 시 구분 용도, 작업 완료 후 삭제 */
+      /* background: lightgreen; */
+      width: 60vw;
+      height: 5vw;
+      margin: auto;
+      margin-top: 1vw;
+      display: flex;
+      align-items: center;
+    }
+    
+    .mjiinp {
+      display: flex;
+      margin-left: 2vw;
+      margin-right: 1vw;
+      width: 15vw;
+      height: 2vw;
+    }
+
+    .mjilb {
+      font-size: 2vw;
+      width: 15vw;
+      margin-left: 5vw;
+      text-align: right;
+    }
+
+    .mjidiv button {
+      background: #86c43a;
+      border: none;
+      width: 8vw;
+      height: 2.5vw;
+    }
+
+    .mjidiv2 {
+      margin-top: 2vw;
+      gap: 2vw;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mjibtn {
+      background: #c0ef86;
+      border: none;
+      width: 8vw;
+      min-width: 7vw;
+      height: 4vw;
+      min-height: 3vw;
+      font-size: 1.4vw;
+      font-weight: 600;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>회원가입</h1>
+  <form method="get" id="mjiform">
+    <div class="mjidiv">
+      <label class="mjilb">아이디</label>
+      <input type="text" class="mjiinp" required name="userid">
+      <button type="button" id="idcheckbtn">중복확인</button>
+    </div>
+
+    <div class="mjidiv">
+      <label class="mjilb">비밀번호</label>
+      <input type="password" class="mjiinp" required name="userpwd" minlength="4" maxlength="8">
+    </div>
+
+    <div class="mjidiv">
+      <label class="mjilb">비밀번호 확인</label>
+      <input type="password" class="mjiinp" required name="userpwdcheck">
+      <p id="pwdchecktext"></p>
+    </div>
+
+    <div class="mjidiv">
+      <label class="mjilb">이메일</label>
+      <input type="email" class="mjiinp" required name="useremail">
+    </div>
+
+    <div class="mjidiv">
+      <label class="mjilb">이름</label>
+      <input type="text" class="mjiinp" required name="username" minlength="2" maxlength="5">
+    </div>
+
+    <div class="mjidiv">
+      <label class="mjilb">생년월일</label>
+      <input type="date" class="mjiinp" required name="userbdate">
+    </div>
+
+    <div class="mjidiv2">
+      <button type="reset" class="mjibtn" id="mjibtncancle">취소</button>
+      <button type="submit" class="mjibtn">완료</button>
+    </div>
+  </form>
+
+  <script>
+
+    // JSON(JavaScript Object Notation) : 데이터를 저장하고 전송하기 위한 텍스트 기반의 데이터 형식 // 개념 정의  // ex) 웹페이지에서 사용자가 input 창에 입력한 값
+    // JSON.parse() : JSON 형식의 문자열을 JavaScript 객체로 변환
+    // JSON.stringify() : JavaScript 객체를 JSON 문자열로 변환
+    // 초기 iddb 설정(localStorage 사용)
+    let iddb = JSON.parse(localStorage.getItem('iddb')) || [];
+    // localStorage.getItem('iddb') : localStorage에 저장된 'iddb' 값 들을 가져온다. 값이 없을 경우 null 반환
+    // JSON.parse() : getItem으로 가져온 문자열은 사용자 입력 값이므로 JSON 형식 -> JavaScript 객체로 변환
+    // || []; : 처음 사용자 입력 시, iddb가 없어 null 반환 -> false -> []; 빈 배열 true 반환 -> 아래 아이디 중복확인 로직에서 추가하고 setItem으로 localStorage에 저장
+    
+    // submit 조건 확인용 아이디 중복확인, 비밀번호 일치 변수 추가
+    let useridchecked = false;
+    let userpwdchecked = false;
+
+    // 취소 버튼 메인 페이지 이동
+    document.getElementById('mjibtncancle').onclick = 
+    () => location =("http://127.0.0.1:5500/250708_Test.html");
+    
+    // submit 조건 + 만 18세 이상 가입 조건
+    document.getElementById('mjiform').addEventListener("submit", function (e) {
+      const userbdateinput = document.querySelector('input[name="userbdate"]'); // input 태그 userbdate 취득
+      const userbdate = new Date(userbdateinput.value); // userbdate 사용자 입력 값 가져오는 변수 선언
+      // Date 생성자 함수 사용(날짜와 시간 정보를 다루는 표준 내장 객체
+      // ex) new Date(); : 내부적으로 오늘 날짜와 시간 정보를 가지고 있음.
+      const today = new Date(); // 인수가 없어 오늘 날짜
+      const usereighteen = new Date();  // 인수가 없어 오늘 날짜
+      usereighteen.setFullYear(today.getFullYear() - 18); // setFullYear 사용하여 usereighteen 의 날짜 정보를 연도만 변경
+      // setFullYear : Date 객체의 연도를 내가 지정한 값으로 설정
+      // getFullYear : Date 객체에서 연도를 취득 ex) 2025.07.10 = 2025
+      usereighteen.setHours(0, 0, 0, 0);  // 시간 0시, 0분, 0초, 0밀리초로 고정
+
+      if (userbdate > usereighteen) { // userbdate 입력 값이 usereighteen 이후 일 경우 알러트 출력
+        e.preventDefault();
+        alert("만 18세 이상부터 가입 가능합니다!");
+        return;
+      }
+
+      if (!useridchecked) { // false 값일 때 제출가능
+        e.preventDefault();
+        alert('아이디 중복!!');
+        return;
+      }
+
+      if (!userpwdchecked) { // false 값일 때 제출가능
+        e.preventDefault();
+        alert('비밀번호 확인 불일치!!');
+        return;
+      }
+
+      const currentid = useridinput.value.trim();
+      iddb.push(currentid); // 제출 시 아이디 입력 값 저장(아래 localStorage)
+      localStorage.setItem('iddb', JSON.stringify(iddb)); // localStorage의 'iddb'라는 키로 저장
+    });
+
+
+    // 아이디 중복확인
+    // const iddb = [];  // 사용자가 입력한 아이디를 저장할 배열 // localStorage 사용으로 미적용
+
+    const useridinput = document.querySelector('input[name="userid"]'); // 사용자 아이디 입력 창 취득
+    const $idcheckbtn = document.getElementById('idcheckbtn');  // 중복확인 버튼 취득
+
+    // 중복확인 버튼을 클릭할 때마다 실행되는 이벤트 리스너
+    $idcheckbtn.addEventListener("click", function () {
+      const currentid = useridinput.value.trim(); // 사용자 아이디 입력 값 가져와 공백제거
+
+      // 아이디 입력 값 공백 제출 방지
+      if (!currentid) {       // currentid 선언 시 공백제거 했기 때문에 공백 입력 시 true 반영
+        alert("아이디 입력?")
+        useridchecked = false;  // 아이디 공백 제출 불가
+        return;               // false 시 종료
+      }
+
+      // 아이디 4글자 미만 불가
+      if (currentid.length < 4) {
+        alert("4글자 이상 입력!")
+        useridchecked = false;  // 아이디 4글자 미만 제출 불가
+        return;
+      }
+
+      // 중복 확인 및 아이디 입력 값 저장 // includes : 배열 안에 특정 값 존재여부 Boolean 값으로 반환
+      if (iddb.includes(currentid)) { // iddb 배열 내 currentid 존재여부 확인
+        alert("중복!");               // 존재 시
+        useridchecked = false;        // 아이디 중복 시 제출 불가
+      } else {
+        alert("사용가능!");           // 부재 시
+        useridchecked = true;       // 아이디 중복이 아닐 시 제출가능
+      }
+
+      console.log("현재 저장된 아이디들:", iddb); // iddb 배열에 저장된 아이디 값 콘솔창에 출력
+    });
+
+
+    // 비밀번호 확인
+    const $userpwdcheck = document.querySelector('input[name=userpwdcheck]');
+    const $userpwdinput = document.querySelector('input[name=userpwd]');
+    // const userpwdckinput = document.querySelector('input[name=userpwdcheck]').value;
+    // 이벤트 리스너 외부에 input.value 저장 시 실시간 값을 가져올 수 없음.
+    const $pwdchecktext = document.querySelector('#pwdchecktext');
+
+    // 비밀번호와 확인 값 일치여부 이벤트 리스너
+    $userpwdcheck.addEventListener('keyup', function (e) {
+
+      const pwd = $userpwdinput.value;  // 비밀번호 입력 값 가져오기
+      const pwdcheck = e.currentTarget.value;   // 비밀번호 확인 입력 값 실시간 가져오기
+
+      if (pwd === pwdcheck) {           // 비밀번호와 비밀번호 확인 값 일치여부 조건, 반환 값 : p태그에 text 추가방식
+        $pwdchecktext.textContent = '비밀번호 일치!'
+        $pwdchecktext.style.color = 'blue';
+        userpwdchecked = true;          // 비밀번호 확인 일치 시 제출 가능
+      } else {
+        $pwdchecktext.textContent = '비밀번호 불일치'
+        $pwdchecktext.style.color = 'red';
+        userpwdchecked = false;         // 비밀번호 확인 불일치 시 제출 불가
+      }
+
+    });
+
+  </script>
+</body>
+</html>

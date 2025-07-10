@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background: #c7fad1;
+    }
+
+    h1 {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 3vw;
+    }
+
+    .mjcdiv { /* 배경색 작업 진행 시 구분 용도, 작업 완료 후 삭제 */
+      /* background: lightgreen; */
+      width: 60vw;
+      height: 4vw;
+      font-size: 1.5vw;
+      font-weight: 600;
+      margin: auto;
+      padding-left: 20vw;
+      padding-top: 0.5vw;
+      padding-bottom: 0.5vw;
+      gap: 1vw;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+    }
+
+
+    .mjcbtncl {
+      display: flex;
+      justify-content: center;
+      margin-top: 2vw;
+
+    }
+
+    .mjcbtn {
+      background: #c0ef86;
+      width: 15vw;
+      height: 7vw;
+      margin-inline: 3vw;
+      border: none;
+      font-size: 2.5vw;
+      font-weight: 550;
+      cursor: pointer;
+    }
+
+    input {
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+  <h1 id="memberjoinclausetitle">Rapidmate 회원가입을 위해 약관에 동의해 주세요.</h1>
+  <form id="memberjoinclause">
+    <div class="mjcdiv" id="mjc1">
+      <input type="checkbox" style="width: 2vw; height: 2vw;" name="userage">
+      <label>[필수] 만 18세 이상입니다.</label>
+    </div>
+
+    <div class="mjcdiv" id="mjc2">
+      <input type="checkbox" style="width: 2vw; height: 2vw;" name="memberclause">
+      <label>[필수] Rapidmate 회원 약관</label>
+    </div>
+
+    <div class="mjcdiv" id="mjc3">
+      <input type="checkbox" style="width: 2vw; height: 2vw;" name="userpi">
+      <label>[필수] 개인 정보 수집/이용</label>
+    </div>
+
+    <div class="mjcdiv" id="mjc4">
+      <input type="checkbox" style="width: 2vw; height: 2vw;" name="serviceclause">
+      <label>[필수] Rapidmate 서비스 약관</label>
+    </div>
+
+    <div class="mjcdiv" id="mjc5">
+      <input type="checkbox" style="width: 2vw; height: 2vw;" name="userlocation">
+      <label>[선택] 위치 기반 서비스 이용</label>
+    </div>
+
+    <div class="mjcdiv" id="mjc6">
+      <input type="checkbox" style="width: 2vw; height: 2vw;" name="marketing">
+      <label>[선택] 홍보성 정보 수신</label>
+    </div>
+
+    <div class="mjcbtncl">
+      <button type="button" class="mjcbtn" id="mjcbtncancle">취소</button>
+      <button type="submit" class="mjcbtn" id="mjcbtnnext">다음</button>
+    </div>
+  </form>
+
+  <script>
+    // 다음 버튼 회원정보 입력 페이지 이동
+    // document.getElementById('mjcbtnnext').onclick = 
+    // () => location = ("http://127.0.0.1:5500/250708_Test3.html");
+
+    // 취소 버튼 메인 페이지 이동
+    document.getElementById('mjcbtncancle').onclick = 
+    () => location = ("http://127.0.0.1:5500/250708_Test.html?");
+
+    
+
+    document.getElementById('memberjoinclause').addEventListener("submit", function(e) {
+     
+      let userage = document.querySelector('input[name=userage]:checked');
+      let memberclause = document.querySelector('input[name=memberclause]:checked');
+      let userpi = document.querySelector('input[name=userpi]:checked');
+      let serviceclause = document.querySelector('input[name=serviceclause]:checked');
+      if(!userage || !memberclause || !userpi || !serviceclause) {
+        e.preventDefault();
+        alert('필수 약관 동의!!');
+      }
+        else {
+          e.preventDefault();
+          window.location.href = "http://127.0.0.1:5500/250708_Test3.html";
+        }
+    });
+  </script>
+</body>
+</html>

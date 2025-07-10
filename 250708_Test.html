@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <style>
-    @font-face {
+    /* 폰트 오류 */
+    /* @font-face {
       font-family: 'pretendard';
       src: url(PretendardVariable.woff2) format('woff2');
-    }
+    } */
 
     body {
       background: #c7fad1;
@@ -44,11 +45,65 @@
       margin: 0.5vw;
     }
 
-    #image1 {
+    .image {
       display: flex;           /* 자식 요소들의 정렬을 제어(해당 설정으로 image를 div태그 내에서 정렬 가능) */
       justify-content: center; /* 수평 중앙 정령 (align-items: 수직) */
       padding-top: 2vw;
+      position: relative;
     }
+
+    .carsearch {
+      background: #c0ef86;
+      font-size: 2.5vw;
+      font-weight: 700;
+      width: 70vw;
+      height: 5vw;
+      margin: auto;
+      margin-top: 2vw;
+      display: flex;            /* display: flex; 설정 후 */
+      justify-content: center;  /* justify-content는 아이템 전체 정렬, justify-items는 아이템 내부의 내용물을 정렬 */
+      align-items: center;  /* align-content는 줄 간격 정렬(한 줄에 아이템들이 나열된 경우 적용 안됨. */
+      gap: 1vw;
+      padding: 1vw;
+    }
+
+    .carsearch input {
+      width: 20vw;
+      height: 3vw;
+    }
+
+    .carsearch button {
+      background: #86c43a;
+      border: 0.1vw solid;
+      width: 5vw;
+      height: 3.5vw;
+      cursor: pointer;
+    }
+
+    .repairsite {
+      background: #c0ef86;
+      font-size: 2.5vw;
+      font-weight: 700;
+      width: 70vw;
+      height: 5vw;
+      margin: auto;
+      margin-top: 3vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1vw;
+      padding: 1vw;
+    }
+
+    #repairsitetitle {
+      margin-right: 2vw;
+    }
+
+    .repairsiteex {
+      font-weight: 500;
+      padding: 2vw;
+    }
+
   </style>
 </head>
 <body>
@@ -60,10 +115,49 @@
     <span class="banner">제휴/이벤트</span>
     <span class="banner">멤버십/쿠폰</span>
     <button class="btn1">로그인</button>
-    <button class="btn1" id="rmmemberjoin">회원가입</button>
-    <div id="image1">
-        <img src="image/2110855 green.jpg" width="70%"> <!-- 비율 고정 -->
+    <button type="button" class="btn1" id="rmmemberjoin">회원가입</button>
+    <div class="image">
+        <img id="image1" src="image/2110855 green.jpg" width="60%"> <!-- 비율 고정 -->
+        <img id="image2" name="image2" src="image/2125585 green.jpg" style="position: absolute;" width="60%">
+        <!--style="position: absolute;" : 기존 노드를 위치와 상관없이 위치 지정 가능 -->
+    </div>
+    <div class="carsearch">
+      <span>차량 소모품 가격 조회 및 예약하기</span>
+      <input type="text">
+      <button type="submit">조회</button>
+    </div>
+
+    <div class="repairsite">
+      <span id="repairsitetitle">이용자가 추천하는 정비소</span>
+      <span class="repairsiteex" id="repairsiteex1">아우토게러지</span>
+      <span class="repairsiteex" id="repairsiteex2">찬찬모터스</span>
     </div>
   </form>
+
+  <script>
+    const $rmform = document.forms.rmform;
+    const $image2 = $rmform.image2;
+    console.log($image2);
+
+
+    // 이미지2 숨김, 표시 반복(이미지1,2 동일위치 겹침 상태)
+    const image2repeat = setInterval(() => {
+      const image2 = document.getElementById("image2");
+      if (image2.style.display === "none") {    // image2.style.display 가 none 일 때
+        image2.style.display = "block";         // image2.style.display block 반영
+      } else {
+        image2.style.display = "none";          // image2.style.display 가 none이 아닐 경우 none 반영
+      }                                         // 초기 상태가 none 이 아니므로 none 우선 반영 후 true, false 코드 반복
+    }, 5000);
+
+    document.getElementById('repairsiteex1').onclick = 
+    () => window.open("https://blog.naver.com/auto_garage", 'popup1', 'width=1000px', 'height=1000px')
+
+    document.getElementById('repairsiteex2').onclick = 
+    () => window.open("https://blog.naver.com/chanchanmotors", 'popup2', 'width=1000px', 'height=1000px')
+
+    document.getElementById('rmmemberjoin').onclick = 
+    () => location = ("http://127.0.0.1:5500/250708_Test2.html")
+  </script>
 </body>
 </html>
