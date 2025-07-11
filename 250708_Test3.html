@@ -140,7 +140,7 @@
     () => location =("http://127.0.0.1:5500/250708_Test.html");
     
     // submit 조건 + 만 18세 이상 가입 조건
-    document.getElementById('mjiform').addEventListener("submit", async function (e) {  // 해시 함수 사용
+    document.getElementById('mjiform').addEventListener("submit", function (e) {  // 해시 함수 사용
       const userbdateinput = document.querySelector('input[name="userbdate"]'); // input 태그 userbdate 취득
       const userbdate = new Date(userbdateinput.value); // userbdate 사용자 입력 값 가져오는 변수 선언
       // Date 생성자 함수 사용(날짜와 시간 정보를 다루는 표준 내장 객체
@@ -170,7 +170,7 @@
         return;
       }
 
-      e.preventDefault(); // 위 나이,중복,불일치 조건 통과 후 폼 제출 막고 async 처리 시작
+      e.preventDefault(); // 위 나이,중복,불일치 조건 통과 후 폼 제출 막고 사용자 아이디,비밀번호 입력 값 저장 처리 시작
 
       const currentid = useridinput.value.trim(); // 사용자 아이디 입력 값 가져와 공백제거
       const currentpwd = $userpwdinput.value;       // 사용자 비밀번호 입력 값 가져오기
@@ -225,7 +225,7 @@
     const $userpwdcheck = document.querySelector('input[name=userpwdcheck]');
     const $userpwdinput = document.querySelector('input[name=userpwd]');
     // const userpwdckinput = document.querySelector('input[name=userpwdcheck]').value;
-    // 이벤트 리스너 외부에 input.value 저장 시 실시간 값을 가져올 수 없음.
+    // 이벤트 리스너 외부에 input.value 저장 시 실시간 값을 가져올 수 없음. 바로 위 코드 비활성화
     const $pwdchecktext = document.querySelector('#pwdchecktext');
 
     // 비밀번호와 확인 값 일치여부 이벤트 리스너

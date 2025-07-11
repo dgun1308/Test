@@ -105,20 +105,20 @@
     () => location = ("http://127.0.0.1:5500/250708_Test.html?");
 
     
-
+    // 약관 동의 다음 버튼 눌러 폼 제출 시 작용
     document.getElementById('memberjoinclause').addEventListener("submit", function(e) {
      
       let userage = document.querySelector('input[name=userage]:checked');
       let memberclause = document.querySelector('input[name=memberclause]:checked');
       let userpi = document.querySelector('input[name=userpi]:checked');
       let serviceclause = document.querySelector('input[name=serviceclause]:checked');
-      if(!userage || !memberclause || !userpi || !serviceclause) {
+      if(!userage || !memberclause || !userpi || !serviceclause) {  // OR연산자 사용 4가지 조건 중 하나라도 true(약관 미동의)값이면 alert창 출력
         e.preventDefault();
         alert('필수 약관 동의!!');
       }
         else {
           e.preventDefault();
-          window.location.href = "http://127.0.0.1:5500/250708_Test3.html";
+          window.location.href = "http://127.0.0.1:5500/250708_Test3.html"; // 회원가입 페이지 이동
         }
     });
   </script>

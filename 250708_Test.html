@@ -45,6 +45,10 @@
       margin: 0.5vw;
     }
 
+    /* .btn1:hover {
+      background: gold;
+    } */  /* 이벤트 핸들러 사용으로 미적용 */
+
     .image {
       display: flex;           /* 자식 요소들의 정렬을 제어(해당 설정으로 image를 div태그 내에서 정렬 가능) */
       justify-content: center; /* 수평 중앙 정령 (align-items: 수직) */
@@ -108,13 +112,13 @@
 </head>
 <body>
   <form id="rmform" name="rmform">
-    <span id="rmtitle">Raipdmate</span>
+    <span id="rmtitle">Rapidmate</span>
     <span class="banner">정비예약</span>
     <span class="banner">매장찾기</span>
     <span class="banner">정비 QnA</span>
     <span class="banner">제휴/이벤트</span>
     <span class="banner">멤버십/쿠폰</span>
-    <button class="btn1">로그인</button>
+    <button type="button" class="btn1" id="rmloginbtn">로그인</button>
     <button type="button" class="btn1" id="rmmemberjoin">회원가입</button>
     <div class="image">
         <img id="image1" src="image/2110855 green.jpg" width="60%"> <!-- 비율 고정 -->
@@ -124,7 +128,7 @@
     <div class="carsearch">
       <span>차량 소모품 가격 조회 및 예약하기</span>
       <input type="text">
-      <button type="submit">조회</button>
+      <button type="button">조회</button>
     </div>
 
     <div class="repairsite">
@@ -135,10 +139,12 @@
   </form>
 
   <script>
+
     const $rmform = document.forms.rmform;
     const $image2 = $rmform.image2;
     console.log($image2);
-
+    const $loginbtn = document.getElementById('rmloginbtn');
+    const $rmjoinbtn = document.getElementById('rmmemberjoin');
 
     // 이미지2 숨김, 표시 반복(이미지1,2 동일위치 겹침 상태)
     const image2repeat = setInterval(() => {
@@ -156,8 +162,75 @@
     document.getElementById('repairsiteex2').onclick = 
     () => window.open("https://blog.naver.com/chanchanmotors", 'popup2', 'width=1000px', 'height=1000px')
 
-    document.getElementById('rmmemberjoin').onclick = 
-    () => location = ("http://127.0.0.1:5500/250708_Test2.html")
+
+    // 로그인 상태일 때 회원가입(로그아웃) 버튼 클릭 시 작용
+    document.getElementById('rmmemberjoin').onclick = () => { // 회원가입 버튼 클릭 시 함수
+      const loginstatus = localStorage.getItem('loginUser');  // 로그인 상태('loginUser') localStorage에서 가져오기 // 로그인 페이지에서 로그인 시 localStorage에 'loginUser'가 저장됨.
+      if (loginstatus) {  // 로그인 상태에서 로그아웃 버튼 클릭 시
+        alert('로그아웃!'); // 로그아웃 alert 출력
+        localStorage.removeItem('loginUser'); // localStorage에 저장된 'loginUser' 삭제 : 로그아웃 상태
+        $rmjoinbtn.textContent = "회원가입";  // 로그아웃 버튼 text 회원가입으로 변경(아래 로그인 상태일 때 버튼 변경 이벤트로 인해 로그아웃 버튼 활성화 된 상태)
+        $loginbtn.textContent = "로그인"; // MyPage 버튼 text 로그인으로 변경
+        mainloginstatus();  // 로그아웃 상태이기 때문에 아래 로그인 상태 확인 함수의 false 반환하여 로그인 페이지로 이동
+      } else {
+        location.href = "http://127.0.0.1:5500/250708_Test2.html";  // 로그아웃 상태일 때 = 회원가입 진행
+      }
+    };
+
+    // 로그인 상태일 때 로그인, 회원가입 버튼 text변경
+    function mainloginstatus() {  // 로그인 상태 확인 함수
+      const loginstatus = localStorage.getItem('loginUser');  // 로그인 상태('loginUser') localStorage에서 가져오기 // 로그인 페이지에서 로그인 시 localStorage에 'loginUser'가 저장됨.
+      if (loginstatus) {  // 로그인 상태일 때
+        $loginbtn.textContent = "MyPage"; // 로그인 버튼 text MyPage로 변경
+        $rmjoinbtn.textContent = "Logout";  // 회원가입 버튼 test Logout으로 변경
+      } else {
+        $loginbtn.onclick = () => location.href ="http://127.0.0.1:5500/250708_Test4%20.html";
+      } return;
+    };
+
+    mainloginstatus();  // 로그인 상태 확인 함수 호출
+
+    // window.addEventListener("DOMContentLoaded", () => {
+    //   const loginstatus = localStorage.getItem('loginUser');
+    //   if (loginstatus) {
+    //     $loginbtn.textContent = "MyPage";
+    //     $rmjoinbtn.textContent = "Logout";
+    //     // $loginbtn.onclick = () => location.href = ""   // 마이페이지 구현 시 활성화
+    //   } else {
+    //     $loginbtn.onclick = () => location.href = "http://127.0.0.1:5500/250708_Test4%20.html";
+    //   }
+    // });
+
+    // 로그인, 회원가입 버튼 이벤트 핸들러 상호작용(버튼 각각 할당:id취득)
+    // $loginbtn.addEventListener('mouseover', () => {
+    //   $loginbtn.style.background = 'gold';
+    // });
+
+    // $rmjoinbtn.addEventListener('mouseover', () => {
+    //   $rmjoinbtn.style.background = 'gold';
+    // });
+
+    // $loginbtn.addEventListener('mouseout', () => {
+    //   $loginbtn.style.background = '#c0ef86';
+    // });
+
+    // $rmjoinbtn.addEventListener('mouseout', () => {
+    //   $rmjoinbtn.style.background = '#c0ef86';
+    // });
+
+    // 로그인, 회원가입 버튼 이벤트 핸들러 상호작용(두 개의 버튼 class로 묶어서 할당)
+    const btns = document.querySelectorAll('.btn1');  // querySelector의 경우 동일 class를 가진 두 요소가 있을 경우 첫 번째 요소 하나만 선택
+
+    btns.forEach(btn => { // forEach : btns 배열의 각 요소를 btn 변수로 지정하고 순서대로 참조하여 사용할 수 있도록 한다.
+      btn.addEventListener('mouseover', () => {
+        btn.style.background = 'gold';
+      });
+
+      btn.addEventListener('mouseout', () => {
+        btn.style.background = '#c0ef86';
+      });
+    });
+
   </script>
 </body>
 </html>

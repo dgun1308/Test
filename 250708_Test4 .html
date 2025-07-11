@@ -4,22 +4,93 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    body {
+      background: #c7fad1;
+    }
+
+    h1 {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 5vw;
+    }
+
+    div { /* 배경색 작업 진행 시 구분 용도, 작업 완료 후 삭제 */
+      /* background: lightgreen; */
+      width: 30vw;
+      height: 3vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      margin-top: 1vw;
+      padding-right: 9vw;
+    }
+
+    button {
+      width: 7vw;
+      height: 2.5vw;
+      display: flex;
+      margin: auto;
+      margin-top: 2vw;
+      align-items: center;
+      justify-content: center;
+    }
+
+    label {
+      width: 10vw;
+      margin-right: 2vw;
+      text-align: right;
+    }
+
+  </style>
 </head>
 <body>
-  <form>
+  <form id="loginform">
   <h1>로그인!!</h1>
   
   <div>
   <label>아이디</label>
-  <input type="text">
+  <input type="text" id="loginid" name="loginid">
   </div>
 
   <div>
     <label>비밀번호</label>
-    <input type="password">
+    <input type="password" id="loginpwd" name="loginpwd">
   </div>
 
-  <button type="submit">로그인</button>
+  <button type="submit" id="loginbtn">로그인</button>
   </form>
+
+  <script>
+
+    let loginiddb = JSON.parse(localStorage.getItem('iddb')) || []; // localStorage에 있는 'iddb', 객체로 가져오기
+
+    // 로그인 아이디 입력 값 가져오기
+    const $loginid = document.querySelector('input[name=loginid]');
+
+    // 로그인 비밀번호 입력 값 가져오기
+    const $loginpwd = document.querySelector('input[name=loginpwd]');
+
+    // 아이디, 비밀번호 입력 값 localStorage에서 검색 후 일치여부 확인
+
+    document.getElementById('loginform').addEventListener("submit", function (e) {  // 폼 제출 시 함수 생성
+      e.preventDefault(); // 폼 제출 시 페이지 새로고침 막기
+
+      const loginidvalue = $loginid.value.trim(); // 아이디 사용자 입력 값 공백제거 하여 가져오기
+      const loginpwdvalue = $loginpwd.value;  // 비밀번호 사용자 입력 값 가져오기
+
+      const user = loginiddb.find(item => item.id === loginidvalue && item.password === loginpwdvalue);
+      // iddb에 저장된 아이디,비밀번호와 사용자 입력 값 일치여부 확인
+
+      if (user) {
+        alert('로그인 성공');
+        localStorage.setItem('loginUser', JSON.stringify(user));  // localStorage에 'loginUser'으로 로그인 상태 정보 저장(메인 페이지에서 로그아웃 시 로그인 상태만 삭제 됨.)
+        window.location.href = "http://127.0.0.1:5500/250708_Test.html?";
+      } else {
+        alert('로그인 실패');
+      }
+    })
+  </script>
 </body>
 </html>
