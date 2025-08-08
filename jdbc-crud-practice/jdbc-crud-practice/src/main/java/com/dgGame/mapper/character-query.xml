@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="selectMaxLevelCharacter">
+        SELECT
+            MAX(A.CHARACTER_LEVEL)
+        FROM TBL_CHARACTER A
+    </entry>
+
+    <entry key="selectAllCharacterList">
+        SELECT * FROM TBL_CHARACTER
+    </entry>
+
+    <entry key="updateCharacterApoint">
+        UPDATE TBL_CHARACTER
+            SET
+            CHARACTER_APOINT
+        WHERE CHARACTER_NAME LIKE ?
+    </entry>
+</properties>

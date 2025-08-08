@@ -86,7 +86,7 @@
       if (user) {
         alert('로그인 성공');
         localStorage.setItem('loginUser', JSON.stringify(user));  // localStorage에 'loginUser'으로 로그인 상태 정보 저장(메인 페이지에서 로그아웃 시 로그인 상태만 삭제 됨.)
-        window.location.href = "http://127.0.0.1:5500/250708_Test.html?";
+        window.location.href = "./250708_Test.html";
       } else {
         alert('로그인 실패');
       }

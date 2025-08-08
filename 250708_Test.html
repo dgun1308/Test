@@ -121,8 +121,8 @@
     <button type="button" class="btn1" id="rmloginbtn">로그인</button>
     <button type="button" class="btn1" id="rmmemberjoin">회원가입</button>
     <div class="image">
-        <img id="image1" src="image/2110855 green.jpg" width="60%" alt="pick-up and delivery"> <!-- 비율 고정 -->
-        <img id="image2" name="image2" src="image/2125585 green.jpg" style="position: absolute;" width="60%" alt="domestic car membership">
+        <img id="image1" src="image/2110855green.jpg" width="60%" alt="pick-up and delivery"> <!-- 비율 고정 -->
+        <img id="image2" name="image2" src="image/2125585green.jpg" style="position: absolute;" width="60%" alt="domestic car membership">
         <!--style="position: absolute;" : 기존 노드를 위치와 상관없이 위치 지정 가능 -->
     </div>
     <div class="carsearch">
@@ -173,7 +173,7 @@
         $loginbtn.textContent = "로그인"; // MyPage 버튼 text 로그인으로 변경
         mainloginstatus();  // 로그아웃 상태이기 때문에 아래 로그인 상태 확인 함수의 false 반환하여 로그인 페이지로 이동
       } else {
-        location.href = "http://127.0.0.1:5500/250708_Test2.html";  // 로그아웃 상태일 때 = 회원가입 진행
+        location.href = "./250708_Test2.html";  // 로그아웃 상태일 때 = 회원가입 진행
       }
     };
 
@@ -184,7 +184,7 @@
         $loginbtn.textContent = "MyPage"; // 로그인 버튼 text MyPage로 변경
         $rmjoinbtn.textContent = "Logout";  // 회원가입 버튼 test Logout으로 변경
       } else {
-        $loginbtn.onclick = () => location.href ="http://127.0.0.1:5500/250708_Test4%20.html";
+        $loginbtn.onclick = () => location.href ="./250708_Test4.html";
       } return;
     };
 
