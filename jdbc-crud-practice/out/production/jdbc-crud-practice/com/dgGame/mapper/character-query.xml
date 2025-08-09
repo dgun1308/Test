@@ -14,28 +14,7 @@
     <entry key="updateCharacterApoint">
         UPDATE TBL_CHARACTER
             SET
-            CHARACTER_APOINT = ?
+            CHARACTER_APOINT
         WHERE CHARACTER_NAME LIKE ?
-    </entry>
-
-    <entry key="insertNewCharacter">
-        INSERT INTO TBL_CHARACTER
-        (
-        CHARACTER_NAME
-        , CHARACTER_LEVEL
-        , CHARACTER_HP
-        , CHARACTER_APOINT
-        , CHARACTER_DPOINT
-        , JOB_ID
-        )
-        VALUES
-        (
-        ?
-        , ?
-        , ?
-        , ?
-        , ?
-        , ?
-        )
     </entry>
 </properties>

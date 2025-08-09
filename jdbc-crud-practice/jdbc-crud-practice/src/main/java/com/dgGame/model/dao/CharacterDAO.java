@@ -4,10 +4,7 @@ import com.dgGame.model.dto.CharacterDTO;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +92,60 @@ public class CharacterDAO {
 
         return charList;
     }
+
+    public int updateCharacterApoint(CharacterDTO udtChar, Connection con) {
+
+        PreparedStatement pstmt = null;
+
+        int result = 0;
+
+        String query = prop.getProperty("updateCharacterApoint");
+
+        try {
+            pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, udtChar.getApoint());
+            pstmt.setString(2, udtChar.getName());
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(pstmt);
+        }
+
+        return result;
+
+    }
+
+    public int insertNewCharacter(CharacterDTO newCharacter, Connection con) {
+
+        PreparedStatement pstmt = null;
+
+        int result = 0;
+
+        String query = prop.getProperty("insertNewCharacter");
+
+        try {
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, newCharacter.getName());
+            pstmt.setInt(2, newCharacter.getLevel());
+            pstmt.setInt(3, newCharacter.getHp());
+            pstmt.setInt(4, newCharacter.getApoint());
+            pstmt.setInt(5, newCharacter.getDpoint());
+            pstmt.setString(6, newCharacter.getJobid());
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(pstmt);
+        }
+
+        return result;
+    }
+
+
 
 
 }
