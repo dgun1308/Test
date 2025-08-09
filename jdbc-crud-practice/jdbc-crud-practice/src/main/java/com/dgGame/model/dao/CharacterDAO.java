@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import static com.dgGame.common.JDBCTemplate.close;
@@ -25,30 +24,40 @@ public class CharacterDAO {
         }
     }
 
-    public int selectMaxLevelCharacter(Connection con) {
+    public CharacterDTO selectCharacterInfo(String characterInfo, Connection con) {
 
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rset = null;
 
-        int maxLevelCharacter = 0;
+        CharacterDTO selChar = null;
 
-        String query = prop.getProperty("selectMaxLevelCharacter");
+        String query = prop.getProperty("selectCharacterInfo");
 
         try {
-            stmt = con.createStatement();
-            rset = stmt.executeQuery(query);
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, characterInfo);
+
+            rset = pstmt.executeQuery();
+
 
             if(rset.next()) {
-                maxLevelCharacter = rset.getInt("MAX(A.CHARACTER_LEVEL)");
+                selChar = new CharacterDTO();
+
+                selChar.setName(rset.getString("CHARACTER_NAME"));
+                selChar.setLevel(rset.getInt("CHARACTER_LEVEL"));
+                selChar.setHp(rset.getInt("CHARACTER_HP"));
+                selChar.setApoint(rset.getInt("CHARACTER_APOINT"));
+                selChar.setDpoint(rset.getInt("CHARACTER_DPOINT"));
+                selChar.setJobName(rset.getString("JOB_NAME"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             close(rset);
-            close(stmt);
+            close(pstmt);
         }
 
-        return maxLevelCharacter;
+        return selChar;
     }
 
     public List<CharacterDTO> selectAllCharacterList(Connection con) {
@@ -76,9 +85,9 @@ public class CharacterDAO {
                 selectedChar.setHp(rset.getInt("CHARACTER_HP"));
                 selectedChar.setApoint(rset.getInt("CHARACTER_APOINT"));
                 selectedChar.setDpoint(rset.getInt("CHARACTER_DPOINT"));
-                selectedChar.setTapoint(rset.getInt("CHARACTER_TAPOINT"));
-                selectedChar.setTdpoint(rset.getInt("CHARACTER_TDPOINT"));
-                selectedChar.setJobid(rset.getString("JOB_ID"));
+//                selectedChar.setTapoint(rset.getInt("CHARACTER_TAPOINT"));
+//                selectedChar.setTdpoint(rset.getInt("CHARACTER_TDPOINT"));
+                selectedChar.setJobName(rset.getString("JOB_NAME"));
 
                 charList.add(selectedChar);
             }
@@ -132,7 +141,30 @@ public class CharacterDAO {
             pstmt.setInt(3, newCharacter.getHp());
             pstmt.setInt(4, newCharacter.getApoint());
             pstmt.setInt(5, newCharacter.getDpoint());
-            pstmt.setString(6, newCharacter.getJobid());
+            pstmt.setString(6, newCharacter.getJobName());
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(pstmt);
+        }
+
+        return result;
+    }
+
+    public int deleteCharacter(CharacterDTO delChar, Connection con) {
+
+        PreparedStatement pstmt = null;
+
+        int result = 0;
+
+        String query = prop.getProperty("deleteCharacter");
+
+        try {
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, delChar.getName());
 
             result = pstmt.executeUpdate();
 

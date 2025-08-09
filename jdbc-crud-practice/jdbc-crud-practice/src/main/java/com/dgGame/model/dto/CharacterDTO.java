@@ -9,7 +9,7 @@ public class CharacterDTO {
     private int dpoint;
     private int tapoint;
     private int tdpoint;
-    private String jobid;
+    private String jobName;
 
     public CharacterDTO() {}
 
@@ -21,7 +21,7 @@ public class CharacterDTO {
         this.dpoint = dpoint;
         this.tapoint = tapoint;
         this.tdpoint = tdpoint;
-        this.jobid = jobid;
+        this.jobName = jobName;
     }
 
     public String getName() {
@@ -80,12 +80,12 @@ public class CharacterDTO {
         this.tdpoint = tdpoint;
     }
 
-    public String getJobid() {
-        return jobid;
+    public String getJobName() {
+        return jobName;
     }
 
-    public void setJobid(String jobid) {
-        this.jobid = jobid;
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class CharacterDTO {
                 ", dpoint=" + dpoint +
                 ", tapoint=" + tapoint +
                 ", tdpoint=" + tdpoint +
-                ", jobid='" + jobid + '\'' +
+                ", jobName='" + jobName + '\'' +
                 '}';
     }
 }

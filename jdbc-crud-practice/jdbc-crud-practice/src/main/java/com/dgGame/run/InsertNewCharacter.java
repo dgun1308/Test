@@ -4,53 +4,19 @@ import com.dgGame.model.dao.CharacterDAO;
 import com.dgGame.model.dto.CharacterDTO;
 
 import java.sql.Connection;
-import java.util.List;
 import java.util.Scanner;
 
 import static com.dgGame.common.JDBCTemplate.close;
 import static com.dgGame.common.JDBCTemplate.getConnection;
 
-public class Application {
+public class InsertNewCharacter {
 
     public static void main(String[] args) {
 
         Connection con = getConnection();
         CharacterDAO registDAO = new CharacterDAO();
 
-        // 1. 캐릭터 최고 레벨 조회
-        int maxLevelCharacter = registDAO.selectMaxLevelCharacter(con);
-
-        System.out.println("maxLevelCharacter = " + maxLevelCharacter);
-
-        // 2. 전체 캐릭터 정보 조회
-        List<CharacterDTO> charList = registDAO.selectAllCharacterList(con);
-
-        for(CharacterDTO allList : charList) {
-            System.out.println("allList = " + allList);
-        }
-
-        // 3. 캐릭터 공격력 수정
-        // 3-1. 공격력을 수정할 캐릭터 선택 및 수정값 입력
         Scanner sc = new Scanner(System.in);
-        System.out.print("공격력을 수정할 캐릭터명을 입력하세요 : ");
-        String characterName = sc.nextLine();
-        System.out.print("수정할 공격력 수치를 입력하세요 : ");
-        int characterApoint = sc.nextInt();
-        sc.nextLine();
-
-        // 3-2. 해당 캐릭터 공격력 수정 값 저장
-        CharacterDTO udtChar = new CharacterDTO();
-        udtChar.setName(characterName);
-        udtChar.setApoint(characterApoint);
-
-        // 3-3. 해당 캐릭터 공격력 수정을 위한 메소드 호출 후 등록
-        int result = registDAO.updateCharacterApoint(udtChar, con);
-
-        if(result >0) {
-            System.out.println(characterName + " 공격력 수정 성공!");
-        } else {
-            System.out.println("공격력 수정 실패!");
-        }
 
         // 4. 신규 캐릭터 등록
         // 4-1. 신규 캐릭터 등록을 위한 정보 입력
@@ -83,15 +49,15 @@ public class Application {
         newChar.setHp(newCharacterHp);
         newChar.setApoint(newCharacterApoint);
         newChar.setDpoint(newCharacterDpoint);
-        newChar.setJobid(jobId);
+        newChar.setJobName(jobId);
 
         // 4-4. 신규 캐릭터 등록을 위한 메소드 호출 후 등록
-        int result1 = registDAO.insertNewCharacter(newChar, con);
+        int result = registDAO.insertNewCharacter(newChar, con);
 
-        if(result1 > 0) {
-            System.out.println("신규 캐릭터 등록 완료");
+        if(result > 0) {
+            System.out.println("\'" + newCharacterName + "\'" + " 캐릭터 등록 완료");
         } else {
-            System.out.println("신규 캐릭터 등록 실패");
+            System.out.println("\'" + newCharacterName + "\'" + " 캐릭터 등록 실패");
         }
 
         close(con);

@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="selectMaxLevelCharacter">
+    <entry key="selectCharacterInfo">
         SELECT
-            MAX(A.CHARACTER_LEVEL)
+            A.CHARACTER_NAME
+            , A.CHARACTER_LEVEL
+            , A.CHARACTER_HP
+            , A.CHARACTER_APOINT
+            , A.CHARACTER_DPOINT
+            , J.JOB_NAME
         FROM TBL_CHARACTER A
+        JOIN TBL_JOB J USING (JOB_ID)
+        WHERE A.CHARACTER_NAME LIKE ?
     </entry>
 
     <entry key="selectAllCharacterList">
-        SELECT * FROM TBL_CHARACTER
+        SELECT
+            A.CHARACTER_NAME
+            , A.CHARACTER_LEVEL
+            , A.CHARACTER_HP
+            , A.CHARACTER_APOINT
+            , A.CHARACTER_DPOINT
+            , J.JOB_NAME
+        FROM TBL_CHARACTER A
+        JOIN TBL_JOB J USING (JOB_ID)
     </entry>
 
     <entry key="updateCharacterApoint">
@@ -37,5 +52,11 @@
         , ?
         , ?
         )
+    </entry>
+
+    <entry key="deleteCharacter">
+        DELETE
+          FROM TBL_CHARACTER
+         WHERE CHARACTER_NAME LIKE ?
     </entry>
 </properties>
